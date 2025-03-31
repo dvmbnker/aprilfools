@@ -474,79 +474,6 @@
             font-size: 12px;
             opacity: 0.8;
         }
-        
-        /* Explorer Window */
-        .explorer-window {
-            display: flex;
-            height: 100%;
-        }
-        
-        .sidebar {
-            width: 200px;
-            background-color: #f5f5f5;
-            border-right: 1px solid #e0e0e0;
-            padding: 10px 0;
-        }
-        
-        .sidebar-item {
-            padding: 8px 15px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        
-        .sidebar-item:hover {
-            background-color: #e5e5e5;
-        }
-        
-        .sidebar-item.active {
-            background-color: #e0e0e0;
-        }
-        
-        .sidebar-icon {
-            margin-right: 10px;
-            font-size: 16px;
-            color: #0078D7;
-        }
-        
-        .file-explorer {
-            flex: 1;
-            padding: 10px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 10px;
-            align-content: start;
-        }
-        
-        .file-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 5px;
-            cursor: pointer;
-            border-radius: 2px;
-        }
-        
-        .file-item:hover {
-            background-color: #f0f0f0;
-        }
-        
-        .file-icon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 5px;
-            color: #0078D7;
-            font-size: 24px;
-        }
-        
-        .file-name {
-            font-size: 12px;
-            text-align: center;
-            word-break: break-word;
-        }
     </style>
 </head>
 <body>
@@ -555,18 +482,6 @@
         <div class="desktop-icon" id="open-scrapbook">
             <div class="icon-img">📕</div>
             <div class="icon-text">My Scrapbook</div>
-        </div>
-        <div class="desktop-icon" id="open-explorer">
-            <div class="icon-img">📁</div>
-            <div class="icon-text">File Explorer</div>
-        </div>
-        <div class="desktop-icon">
-            <div class="icon-img">🌐</div>
-            <div class="icon-text">Browser</div>
-        </div>
-        <div class="desktop-icon">
-            <div class="icon-img">⚙️</div>
-            <div class="icon-text">Settings</div>
         </div>
     </div>
     
@@ -671,94 +586,6 @@
         </div>
     </div>
     
-    <!-- File Explorer Window -->
-    <div class="window" id="explorer-window" style="width: 70%; height: 70%; top: 15%; left: 15%;">
-        <div class="window-header">
-            <div class="window-title">File Explorer</div>
-            <div class="window-controls">
-                <div class="window-control minimize">─</div>
-                <div class="window-control maximize">□</div>
-                <div class="window-control close">✕</div>
-            </div>
-        </div>
-        <div class="window-menu">
-            <div class="menu-item">File</div>
-            <div class="menu-item">Edit</div>
-            <div class="menu-item">View</div>
-            <div class="menu-item">Help</div>
-        </div>
-        <div class="window-toolbar">
-            <button class="toolbar-button">Back</button>
-            <button class="toolbar-button">Forward</button>
-            <button class="toolbar-button">Up</button>
-            <button class="toolbar-button">New Folder</button>
-        </div>
-        <div class="window-content">
-            <div class="explorer-window">
-                <div class="sidebar">
-                    <div class="sidebar-item active">
-                        <div class="sidebar-icon">📂</div>
-                        <div>Documents</div>
-                    </div>
-                    <div class="sidebar-item">
-                        <div class="sidebar-icon">📷</div>
-                        <div>Pictures</div>
-                    </div>
-                    <div class="sidebar-item">
-                        <div class="sidebar-icon">📹</div>
-                        <div>Videos</div>
-                    </div>
-                    <div class="sidebar-item">
-                        <div class="sidebar-icon">🎵</div>
-                        <div>Music</div>
-                    </div>
-                    <div class="sidebar-item">
-                        <div class="sidebar-icon">📥</div>
-                        <div>Downloads</div>
-                    </div>
-                    <div class="sidebar-item">
-                        <div class="sidebar-icon">☁️</div>
-                        <div>OneDrive</div>
-                    </div>
-                </div>
-                <div class="file-explorer">
-                    <div class="file-item" id="open-scrapbook-from-explorer">
-                        <div class="file-icon">📕</div>
-                        <div class="file-name">My Scrapbook.scrpbk</div>
-                    </div>
-                    <div class="file-item">
-                        <div class="file-icon">📄</div>
-                        <div class="file-name">Budget 2023.xlsx</div>
-                    </div>
-                    <div class="file-item">
-                        <div class="file-icon">📄</div>
-                        <div class="file-name">Resume.docx</div>
-                    </div>
-                    <div class="file-item">
-                        <div class="file-icon">📄</div>
-                        <div class="file-name">Project Notes.txt</div>
-                    </div>
-                    <div class="file-item">
-                        <div class="file-icon">📄</div>
-                        <div class="file-name">Presentation.pptx</div>
-                    </div>
-                    <div class="file-item">
-                        <div class="file-icon">📁</div>
-                        <div class="file-name">Vacation Photos</div>
-                    </div>
-                    <div class="file-item">
-                        <div class="file-icon">📁</div>
-                        <div class="file-name">Work Files</div>
-                    </div>
-                    <div class="file-item">
-                        <div class="file-icon">📁</div>
-                        <div class="file-name">Family</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <!-- Start Menu -->
     <div class="start-menu" id="start-menu">
         <div class="start-menu-header">
@@ -769,38 +596,6 @@
             <div class="app-tile" id="start-scrapbook">
                 <div class="app-icon">📕</div>
                 <div class="app-name">Scrapbook</div>
-            </div>
-            <div class="app-tile" id="start-explorer">
-                <div class="app-icon">📁</div>
-                <div class="app-name">Explorer</div>
-            </div>
-            <div class="app-tile">
-                <div class="app-icon">🌐</div>
-                <div class="app-name">Browser</div>
-            </div>
-            <div class="app-tile">
-                <div class="app-icon">📧</div>
-                <div class="app-name">Mail</div>
-            </div>
-            <div class="app-tile">
-                <div class="app-icon">📅</div>
-                <div class="app-name">Calendar</div>
-            </div>
-            <div class="app-tile">
-                <div class="app-icon">🎮</div>
-                <div class="app-name">Games</div>
-            </div>
-            <div class="app-tile">
-                <div class="app-icon">🎬</div>
-                <div class="app-name">Photos</div>
-            </div>
-            <div class="app-tile">
-                <div class="app-icon">⚙️</div>
-                <div class="app-name">Settings</div>
-            </div>
-            <div class="app-tile">
-                <div class="app-icon">🔍</div>
-                <div class="app-name">Search</div>
             </div>
         </div>
     </div>
@@ -821,9 +616,6 @@
         </div>
         <div class="taskbar-icons">
             <div class="taskbar-icon" id="taskbar-scrapbook">📕</div>
-            <div class="taskbar-icon" id="taskbar-explorer">📁</div>
-            <div class="taskbar-icon">🌐</div>
-            <div class="taskbar-icon">📧</div>
         </div>
         <div class="system-tray">
             <div class="system-icon">📶</div>
@@ -838,64 +630,160 @@
         const startButton = document.getElementById('start-button');
         const startMenu = document.getElementById('start-menu');
         const scrapbookWindow = document.getElementById('scrapbook-window');
-        const explorerWindow = document.getElementById('explorer-window');
         const openScrapbookIcon = document.getElementById('open-scrapbook');
-        const openExplorerIcon = document.getElementById('open-explorer');
         const taskbarScrapbook = document.getElementById('taskbar-scrapbook');
-        const taskbarExplorer = document.getElementById('taskbar-explorer');
         const notification = document.getElementById('notification');
         const systemClock = document.getElementById('system-clock');
         const startScrapbook = document.getElementById('start-scrapbook');
-        const startExplorer = document.getElementById('start-explorer');
-        const openScrapbookFromExplorer = document.getElementById('open-scrapbook-from-explorer');
         
         // Window Controls
         const closeButtons = document.querySelectorAll('.window-control.close');
         const minimizeButtons = document.querySelectorAll('.window-control.minimize');
         const maximizeButtons = document.querySelectorAll('.window-control.maximize');
         
-        // Draggable Windows
-        const windows = document.querySelectorAll('.window');
-        let activeWindow = null;
+        // Function to update clock
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Convert 0 to 12
+            
+            systemClock.textContent = `${hours}:${minutes} ${ampm}`;
+        }
         
-        // Function to open a window
-        function openWindow(windowElement) {
-            // Close all other windows first (optional)
-            // windows.forEach(w => w.style.display = 'none');
-            
-            // Show the selected window
-            windowElement.style.display = 'flex';
-            windowElement.style.transform = 'scale(0.95)';
-            
-            // Add animation
+        // Initialize clock and update every minute
+        updateClock();
+        setInterval(updateClock, 60000);
+        
+        // Show notification when page loads
+        setTimeout(() => {
+            notification.classList.add('show');
             setTimeout(() => {
-                windowElement.style.transform = 'scale(1)';
+                notification.classList.remove('show');
+            }, 5000);
+        }, 1000);
+        
+        // Toggle start menu
+        startButton.addEventListener('click', () => {
+            if (startMenu.style.display === 'flex') {
+                startMenu.style.display = 'none';
+            } else {
+                startMenu.style.display = 'flex';
+            }
+        });
+        
+        // Close start menu when clicking elsewhere
+        document.addEventListener('click', (e) => {
+            if (!startMenu.contains(e.target) && e.target !== startButton) {
+                startMenu.style.display = 'none';
+            }
+        });
+        
+        // Open scrapbook from desktop icon
+        openScrapbookIcon.addEventListener('click', () => {
+            openScrapbook();
+        });
+        
+        // Open scrapbook from taskbar
+        taskbarScrapbook.addEventListener('click', () => {
+            toggleScrapbook();
+        });
+        
+        // Open scrapbook from start menu
+        startScrapbook.addEventListener('click', () => {
+            openScrapbook();
+            startMenu.style.display = 'none';
+        });
+        
+        // Function to open scrapbook
+        function openScrapbook() {
+            scrapbookWindow.style.display = 'flex';
+            scrapbookWindow.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                scrapbookWindow.style.transform = 'scale(1)';
             }, 50);
             
-            // Set as active window
-            windows.forEach(w => w.classList.remove('active'));
-            windowElement.classList.add('active');
-            
-            // Update taskbar
-            if (windowElement === scrapbookWindow) {
-                taskbarScrapbook.classList.add('active');
-            } else if (windowElement === explorerWindow) {
-                taskbarExplorer.classList.add('active');
+            scrapbookWindow.classList.add('active');
+            taskbarScrapbook.classList.add('active');
+        }
+        
+        // Function to toggle scrapbook window
+        function toggleScrapbook() {
+            if (scrapbookWindow.style.display === 'flex') {
+                if (scrapbookWindow.classList.contains('minimized')) {
+                    scrapbookWindow.classList.remove('minimized');
+                    scrapbookWindow.style.transform = 'scale(1)';
+                } else {
+                    scrapbookWindow.classList.add('minimized');
+                    scrapbookWindow.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        scrapbookWindow.style.display = 'none';
+                    }, 200);
+                    taskbarScrapbook.classList.remove('active');
+                }
+            } else {
+                openScrapbook();
             }
         }
         
-        // Function to close a window
-        function closeWindow(windowElement) {
-            windowElement.style.transform = 'scale(0.95)';
+        // Close buttons functionality
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const currentWindow = button.closest('.window');
+                currentWindow.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    currentWindow.style.display = 'none';
+                    if (currentWindow === scrapbookWindow) {
+                        taskbarScrapbook.classList.remove('active');
+                    }
+                }, 200);
+            });
+        });
+        
+        // Make windows draggable
+        windows.forEach(window => {
+            const header = window.querySelector('.window-header');
             
-            setTimeout(() => {
-                windowElement.style.display = 'none';
+            let isDragging = false;
+            let offsetX, offsetY;
+            
+            header.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - window.getBoundingClientRect().left;
+                offsetY = e.clientY - window.getBoundingClientRect().top;
                 
-                // Update taskbar
-                if (windowElement === scrapbookWindow) {
-                    taskbarScrapbook.classList.remove('active');
-                } else if (windowElement === explorerWindow) {
-                    taskbarExplorer.classList.remove('active');
-                }
-            }, 200); // Adjust timeout if needed for smooth animation
-        }
+                window.classList.add('active');
+                
+                // Remove active class from other windows
+                windows.forEach(w => {
+                    if (w !== window) w.classList.remove('active');
+                });
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const x = e.clientX - offsetX;
+                const y = e.clientY - offsetY;
+                
+                window.style.left = `${x}px`;
+                window.style.top = `${y}px`;
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        });
+        
+        // Open scrapbook by default
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                openScrapbook();
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
