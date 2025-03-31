@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WindowsScrap OS</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2"></script>
+    <audio id="birthdayMusic" preload="auto">
+        <source src="src/song.mp3.mp3" type="audio/mpeg">
+    </audio>
     <style>
         * {
             margin: 0;
@@ -12,10 +16,12 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        
+        
         body {
             overflow: hidden;
             background-color: #0078D7;
-            background-image: url("src/1\ -\ Copy.jpg");
+            background-image: url("src/Wallpaper.jpg");
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -380,13 +386,74 @@
             line-height: 1.6;
             color: #555;
         }
+        .confetti-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #2a532b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        /* Remove or update this existing confetti container class */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999; /* This is the key change - ensuring a very high z-index */
+        }
+
+        /* Ensure the window elements have lower z-index */
+        .window {
+            position: absolute;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform-origin: center;
+            z-index: 100; /* Keep this as is */
+            display: none;
+        }
+
+        .window.active {
+            z-index: 200; /* Keep this as is */
+        }
+        .confetti-button:hover {
+            background-color: #b4b4b4;
+        }
         
         .image-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 20px 0;
-        }
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0;
+        margin: 0;
+    }
+
+    .image-grid .photo {
+        height: 250px; /* Adjust this value as needed */
+        overflow: hidden; /* Ensures no overflow if images are too large */
+    }
+
+    .image-grid .photo img {
+        display: block;
+        width: 100%;
+        height: 100%; /* Makes images fill their containers */
+        object-fit: cover; /* Ensures the image maintains aspect ratio while covering the area */
+    }
+
+    .photo:last-child {
+        grid-column: 1 / -1; /* Makes the last image span both columns */
+        height: 300px; /* Adjust height for the bottom image */
+    }
+
+
         
         .photo {
             width: 100%;
@@ -553,13 +620,6 @@
                     </div>
                     <div class="scroll-indicator">↓ Scroll to continue ↓</div>
                 </div>
-                <div class="page" id="page6">
-                    <div class="page-content">
-                        <h2>My Pari</h2>
-                        <p>Looking forward to creating more memories and adding pages to this scrapbook.</p>
-                    </div>
-                    <div class="scroll-indicator">↓ Scroll to continue ↓</div>
-                </div>
 
                 <div class="page" id="page4">
                     <div class="page-content">
@@ -579,6 +639,19 @@
                     </div>
                     <div class="scroll-indicator">↓ Scroll to continue ↓</div>
                 </div>
+
+                <div class="page" id="page6">
+                    <div class="page-content">
+                        <h2>My Pari</h2>
+                        <p>First of all Happy Birthday Pari! 🎂. Have a great day Pari cause you deserve it. Its been a hectic week and ik I didn't make it any better but regardless of what we go through Pari, I am always here for you. Even when you wanna vent about me to me, I am there. But lets talk about something nicer. You're OLD! I am also no longer a pedo. So that's good. From 10 to 20 Pari, 10 years we've seen each other grow and its been a journey hasn't it. Its been great. I hope you have a great flipping (no cursing) day. I am so grateful for you and I am so glad that god took their time when they made you cause at the end of the day, whether you like it or not, I was made for you and you were made for me. Its the best present that anyone could ever get so hey, its great. I love you so much more than you can understand and I promise imma spend the rest of my life proving to that to you. You're amazing and the most brillant person i've ever met. You match my freak, curiosity and passion for the most detailed things yet are the opposite side of the coin to me. You're the head. I don't need to explain why. Yk (that's why you match my freak). There was a stage in my life where I genuinely thought that having anyone wont happen, how can I let my past self know that I got the person that I prayed for countless times? So if I forget to show you how grateful I am for you, I am sorry. From talking about relativity to relatives, I am glad that I found the person I can talk to about anything and I hope you know that you can do the same even if I struggle to show that.  <br><br> I love you. Stay Safe. Happy Birthday Paru. <br>
+                            - Devu 
+                        </p>
+                    </div>
+                    <button class="confetti-button" id="confettiButton">Press Here</button>
+                    <div id="confettiContainer" class="confetti-container"></div>
+                </div>
+
+                
                 
 
             </div>
@@ -623,6 +696,7 @@
             <div class="clock" id="system-clock">12:00 PM</div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <script>
         // DOM Elements
@@ -696,6 +770,105 @@
             openScrapbook();
             startMenu.style.display = 'none';
         });
+
+        document.getElementById('confettiButton').addEventListener('click', function() {
+            // Play birthday music
+            const birthdayMusic = document.getElementById('birthdayMusic');
+            birthdayMusic.volume = 0.5; // Set volume to 50%
+            birthdayMusic.currentTime = 0; // Start from beginning
+            birthdayMusic.play().catch(e => console.log("Audio play failed:", e));
+            
+            // Create a full-screen canvas for the confetti that's positioned above all other elements
+            const confettiCanvas = document.createElement('canvas');
+            confettiCanvas.id = 'confetti-canvas';
+            
+            // Style the canvas to cover the entire screen and be in front of everything
+            confettiCanvas.style.position = 'fixed';
+            confettiCanvas.style.top = '0';
+            confettiCanvas.style.left = '0';
+            confettiCanvas.style.width = '100%';
+            confettiCanvas.style.height = '100%';
+            confettiCanvas.style.pointerEvents = 'none'; // Allow clicks to go through
+            confettiCanvas.style.zIndex = '9999'; // Very high z-index to be in front
+            
+            // Add the canvas to the document
+            document.body.appendChild(confettiCanvas);
+            
+            // Configure confetti to use our canvas
+            const myConfetti = confetti.create(confettiCanvas, { 
+                resize: true,
+                useWorker: true
+            });
+            
+            // First burst - colorful confetti from center
+            myConfetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { x: 0.5, y: 0.6 },
+                colors: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF']
+            });
+            
+            // Second burst - from left side (delayed slightly)
+            setTimeout(() => {
+                myConfetti({
+                particleCount: 80,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0, y: 0.6 },
+                colors: ['#FFD700', '#FFA500', '#FF4500']
+                });
+            }, 250);
+            
+            // Third burst - from right side (delayed slightly)
+            setTimeout(() => {
+                myConfetti({
+                particleCount: 80,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1, y: 0.6 },
+                colors: ['#00CED1', '#7B68EE', '#9370DB']
+                });
+            }, 400);
+            
+            // Fourth burst - celebration cannon from bottom
+            setTimeout(() => {
+                myConfetti({
+                particleCount: 100,
+                startVelocity: 30,
+                spread: 360,
+                gravity: 0.5,
+                ticks: 300,
+                origin: { x: 0.5, y: 1 },
+                scalar: 1
+                });
+            }, 650);
+            
+            // Final burst - slow falling confetti
+            setTimeout(() => {
+                myConfetti({
+                particleCount: 50,
+                angle: 90,
+                spread: 100,
+                decay: 0.94,
+                gravity: 0.3,
+                drift: 0,
+                ticks: 400,
+                origin: { x: 0.5, y: 0.1 },
+                shapes: ['square']
+                });
+            }, 1000);
+            
+            // Make the button unclickable for a few seconds to prevent multiple plays
+            this.disabled = true;
+            setTimeout(() => {
+                this.disabled = false;
+            }, 3000);
+            
+            // Remove the canvas after confetti animation completes
+            setTimeout(() => {
+                confettiCanvas.remove();
+            }, 10000); // Remove after 10 seconds
+            });
         
         // Function to open scrapbook
         function openScrapbook() {
