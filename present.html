@@ -3,28 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Scrapbook</title>
+    <title>WindowsScrap OS</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            font-family: 'Arial', sans-serif;
-            overflow-x: hidden;
-            background-color: #f9f5eb;
+            overflow: hidden;
+            background-color: #0078D7;
+            background-image: url("/api/placeholder/1920/1080");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            position: relative;
         }
         
+        /* Taskbar Styles */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-color: #171717;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .start-button {
+            width: 50px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background-color: #171717;
+            transition: background-color 0.2s;
+        }
+        
+        .start-button:hover {
+            background-color: #333;
+        }
+        
+        .start-logo {
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #0078D7;
+            font-weight: bold;
+            border-radius: 2px;
+        }
+        
+        .taskbar-icons {
+            display: flex;
+            height: 100%;
+            margin-left: 10px;
+        }
+        
+        .taskbar-icon {
+            width: 40px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background-color: #171717;
+            transition: background-color 0.2s;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .taskbar-icon:hover {
+            background-color: #333;
+        }
+        
+        .taskbar-icon.active {
+            border-bottom: 3px solid #0078D7;
+            background-color: #333;
+        }
+        
+        .system-tray {
+            margin-left: auto;
+            height: 100%;
+            display: flex;
+            padding-right: 10px;
+        }
+        
+        .system-icon {
+            width: 30px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .clock {
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        /* Start Menu */
+        .start-menu {
+            position: fixed;
+            bottom: 40px;
+            left: 0;
+            width: 350px;
+            height: 500px;
+            background-color: #171717;
+            z-index: 999;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .start-menu-header {
+            padding: 15px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .user-profile {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #555;
+            margin-right: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .start-menu-apps {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .app-tile {
+            aspect-ratio: 1;
+            background-color: #0078D7;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 2px;
+            padding: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .app-tile:hover {
+            background-color: #0086F0;
+        }
+        
+        .app-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .app-name {
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        /* Desktop Icons */
+        .desktop-icons {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .desktop-icon {
+            width: 80px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .icon-img {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 5px;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 2px;
+        }
+        
+        .icon-text {
+            color: white;
+            font-size: 12px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        /* Scrapbook Window */
+        .window {
+            position: absolute;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform-origin: center;
+            z-index: 100;
+            display: none;
+        }
+        
+        .window.active {
+            z-index: 200;
+        }
+        
+        .window-header {
+            height: 30px;
+            background-color: #e1e1e1;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            cursor: move;
+        }
+        
+        .window-title {
+            flex: 1;
+            font-size: 12px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .window-controls {
+            display: flex;
+        }
+        
+        .window-control {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 10px;
+            transition: background-color 0.2s;
+        }
+        
+        .window-control:hover {
+            background-color: #ddd;
+        }
+        
+        .window-control.close:hover {
+            background-color: #e81123;
+            color: white;
+        }
+        
+        .window-menu {
+            height: 25px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 12px;
+        }
+        
+        .menu-item {
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .menu-item:hover {
+            color: #0078D7;
+        }
+        
+        .window-toolbar {
+            height: 30px;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+        
+        .toolbar-button {
+            padding: 5px 10px;
+            font-size: 12px;
+            background-color: transparent;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        
+        .toolbar-button:hover {
+            background-color: #e5e5e5;
+        }
+        
+        .window-content {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+        
+        /* Scrapbook Content */
         .scrapbook-container {
             scroll-snap-type: y mandatory;
-            height: 100vh;
+            height: 100%;
             overflow-y: scroll;
         }
         
         .page {
-            height: 100vh;
+            height: 100%;
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
@@ -32,13 +344,12 @@
             align-items: center;
             position: relative;
             padding: 20px;
-            transition: transform 0.5s ease;
         }
         
         .page-content {
             background-color: white;
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             max-width: 800px;
             width: 90%;
@@ -47,27 +358,27 @@
             border: 1px solid #e0e0e0;
         }
         
-        .page:nth-child(1) { background-color: #ffebcd; }
-        .page:nth-child(2) { background-color: #e6f5ff; }
-        .page:nth-child(3) { background-color: #f0fff0; }
-        .page:nth-child(4) { background-color: #fff0f5; }
-        .page:nth-child(5) { background-color: #f5f5dc; }
+        .page:nth-child(1) { background-color: #f3f9fe; }
+        .page:nth-child(2) { background-color: #f5f9f5; }
+        .page:nth-child(3) { background-color: #fefaf3; }
+        .page:nth-child(4) { background-color: #fef3f7; }
+        .page:nth-child(5) { background-color: #f9f9f9; }
         
         h1 {
             margin-bottom: 20px;
-            color: #333;
+            color: #0078D7;
             font-size: 2.5rem;
         }
         
         h2 {
             margin-bottom: 15px;
-            color: #555;
+            color: #333;
         }
         
         p {
             margin-bottom: 20px;
             line-height: 1.6;
-            color: #666;
+            color: #555;
         }
         
         .image-grid {
@@ -79,7 +390,7 @@
         
         .photo {
             width: 100%;
-            height: 200px;
+            height: 150px;
             background-color: #eee;
             border: 1px solid #ddd;
             display: flex;
@@ -101,43 +412,9 @@
             z-index: 10;
         }
         
-        .polaroid {
-            background-color: white;
-            padding: 10px 10px 30px 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transform: rotate(-3deg);
-            transition: transform 0.3s ease;
-        }
-        
-        .polaroid:hover {
-            transform: rotate(0deg) scale(1.05);
-        }
-        
-        .polaroid img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-        }
-        
-        .caption {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            font-family: 'Comic Sans MS', cursive;
-        }
-        
-        .tape {
-            position: absolute;
-            width: 80px;
-            height: 20px;
-            background-color: rgba(255, 255, 255, 0.5);
-            transform: rotate(10deg);
-            top: -5px;
-            left: 20px;
-        }
-        
         .scroll-indicator {
             position: absolute;
-            bottom: 20px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             animation: bounce 2s infinite;
@@ -157,198 +434,468 @@
             }
         }
         
-        .sticker {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            animation: wobble 3s infinite;
-        }
-        
-        @keyframes wobble {
-            0% { transform: rotate(0deg); }
-            85% { transform: rotate(0deg); }
-            90% { transform: rotate(5deg); }
-            95% { transform: rotate(-5deg); }
-            100% { transform: rotate(0deg); }
-        }
-        
-        .sticker-1 {
-            top: 20px;
-            right: 50px;
-            background-image: url("/api/placeholder/80/80");
-            transform: rotate(15deg);
-        }
-        
-        .sticker-2 {
-            bottom: 30px;
-            left: 60px;
-            background-image: url("/api/placeholder/80/80");
-            transform: rotate(-10deg);
-        }
-        
-        .arrow-nav {
+        /* Notifications */
+        .notification {
             position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+            bottom: 50px;
+            right: 10px;
+            width: 300px;
+            background-color: #333;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 3px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            transform: translateX(350px);
+            transition: transform 0.3s ease;
+            z-index: 2000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .notification-message {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        /* Explorer Window */
+        .explorer-window {
+            display: flex;
+            height: 100%;
+        }
+        
+        .sidebar {
+            width: 200px;
+            background-color: #f5f5f5;
+            border-right: 1px solid #e0e0e0;
+            padding: 10px 0;
+        }
+        
+        .sidebar-item {
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .sidebar-item:hover {
+            background-color: #e5e5e5;
+        }
+        
+        .sidebar-item.active {
+            background-color: #e0e0e0;
+        }
+        
+        .sidebar-icon {
+            margin-right: 10px;
+            font-size: 16px;
+            color: #0078D7;
+        }
+        
+        .file-explorer {
+            flex: 1;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            align-content: start;
+        }
+        
+        .file-item {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            z-index: 100;
-        }
-        
-        .nav-dot {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background-color: rgba(0,0,0,0.3);
+            align-items: center;
+            padding: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            border-radius: 2px;
         }
         
-        .nav-dot.active {
-            background-color: rgba(0,0,0,0.7);
+        .file-item:hover {
+            background-color: #f0f0f0;
         }
         
-        .nav-dot:hover {
-            background-color: rgba(0,0,0,0.5);
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            color: #0078D7;
+            font-size: 24px;
+        }
+        
+        .file-name {
+            font-size: 12px;
+            text-align: center;
+            word-break: break-word;
         }
     </style>
 </head>
 <body>
-    <div class="scrapbook-container">
-        <div class="page" id="page1">
-            <div class="page-content">
-                <h1>My Digital Scrapbook</h1>
-                <p>Welcome to my collection of memories. Scroll down to explore different chapters of my journey.</p>
-                <div class="polaroid">
-                    <div class="tape"></div>
-                    <img src="/api/placeholder/400/300" alt="Cover photo">
-                    <div class="caption">The beginning of our adventure</div>
-                </div>
-            </div>
-            <div class="scroll-indicator">↓ Scroll to continue ↓</div>
+    <!-- Desktop Icons -->
+    <div class="desktop-icons">
+        <div class="desktop-icon" id="open-scrapbook">
+            <div class="icon-img">📕</div>
+            <div class="icon-text">My Scrapbook</div>
         </div>
-        
-        <div class="page" id="page2">
-            <div class="page-content">
-                <h2>Summer Vacation 2023</h2>
-                <p>The perfect getaway to the beach where we spent days swimming and nights stargazing.</p>
-                <div class="image-grid">
-                    <div class="photo">
-                        <img src="/api/placeholder/300/200" alt="Beach sunset">
-                    </div>
-                    <div class="photo">
-                        <img src="/api/placeholder/300/200" alt="Beach picnic">
-                    </div>
-                    <div class="photo">
-                        <img src="/api/placeholder/300/200" alt="Swimming">
-                    </div>
-                    <div class="photo">
-                        <img src="/api/placeholder/300/200" alt="Beach bonfire">
-                    </div>
-                </div>
-                <div class="sticker sticker-1"></div>
-            </div>
-            <div class="scroll-indicator">↓ Scroll to continue ↓</div>
+        <div class="desktop-icon" id="open-explorer">
+            <div class="icon-img">📁</div>
+            <div class="icon-text">File Explorer</div>
         </div>
-        
-        <div class="page" id="page3">
-            <div class="page-content">
-                <h2>Family Reunion</h2>
-                <p>After five years, we finally got the whole family together. So many stories shared and memories made.</p>
-                <div class="image-grid">
-                    <div class="polaroid" style="transform: rotate(2deg);">
-                        <img src="/api/placeholder/300/200" alt="Family photo">
-                        <div class="caption">Everyone together!</div>
-                    </div>
-                    <div class="polaroid" style="transform: rotate(-2deg);">
-                        <img src="/api/placeholder/300/200" alt="Family dinner">
-                        <div class="caption">The feast</div>
-                    </div>
-                </div>
-                <div class="sticker sticker-2"></div>
-            </div>
-            <div class="scroll-indicator">↓ Scroll to continue ↓</div>
+        <div class="desktop-icon">
+            <div class="icon-img">🌐</div>
+            <div class="icon-text">Browser</div>
         </div>
-        
-        <div class="page" id="page4">
-            <div class="page-content">
-                <h2>Holiday Season</h2>
-                <p>Warm lights, festive decorations, and the joy of giving made this winter special.</p>
-                <div class="image-grid">
-                    <div class="photo">
-                        <img src="/api/placeholder/300/200" alt="Christmas tree">
-                    </div>
-                    <div class="photo">
-                        <img src="/api/placeholder/300/200" alt="Gift unwrapping">
-                    </div>
-                    <div class="polaroid" style="transform: rotate(3deg); grid-column: span 2;">
-                        <img src="/api/placeholder/600/200" alt="Family holiday dinner">
-                        <div class="caption">Holiday dinner with everyone</div>
-                    </div>
-                </div>
-            </div>
-            <div class="scroll-indicator">↓ Scroll to continue ↓</div>
+        <div class="desktop-icon">
+            <div class="icon-img">⚙️</div>
+            <div class="icon-text">Settings</div>
         </div>
-        
-        <div class="page" id="page5">
-            <div class="page-content">
-                <h2>New Beginnings</h2>
-                <p>Looking forward to creating more memories and adding pages to this scrapbook.</p>
-                <div class="polaroid" style="transform: rotate(-1deg);">
-                    <div class="tape"></div>
-                    <img src="/api/placeholder/400/300" alt="New journey">
-                    <div class="caption">The adventure continues...</div>
+    </div>
+    
+    <!-- Scrapbook Window -->
+    <div class="window" id="scrapbook-window" style="width: 80%; height: 80%; top: 10%; left: 10%;">
+        <div class="window-header">
+            <div class="window-title">My Digital Scrapbook</div>
+            <div class="window-controls">
+                <div class="window-control minimize">─</div>
+                <div class="window-control maximize">□</div>
+                <div class="window-control close">✕</div>
+            </div>
+        </div>
+        <div class="window-menu">
+            <div class="menu-item">File</div>
+            <div class="menu-item">Edit</div>
+            <div class="menu-item">View</div>
+            <div class="menu-item">Help</div>
+        </div>
+        <div class="window-toolbar">
+            <button class="toolbar-button">New</button>
+            <button class="toolbar-button">Open</button>
+            <button class="toolbar-button">Save</button>
+            <button class="toolbar-button">Print</button>
+        </div>
+        <div class="window-content">
+            <div class="scrapbook-container">
+                <div class="page" id="page1">
+                    <div class="page-content">
+                        <h1>My Digital Scrapbook</h1>
+                        <p>Welcome to my collection of memories. Scroll down to explore different chapters of my journey.</p>
+                        <img src="/api/placeholder/500/300" alt="Cover photo" style="max-width: 100%; border: 1px solid #ddd; margin-bottom: 15px;">
+                    </div>
+                    <div class="scroll-indicator">↓ Scroll to continue ↓</div>
+                </div>
+                
+                <div class="page" id="page2">
+                    <div class="page-content">
+                        <h2>Summer Vacation 2023</h2>
+                        <p>The perfect getaway to the beach where we spent days swimming and nights stargazing.</p>
+                        <div class="image-grid">
+                            <div class="photo">
+                                <img src="/api/placeholder/300/200" alt="Beach sunset">
+                            </div>
+                            <div class="photo">
+                                <img src="/api/placeholder/300/200" alt="Beach picnic">
+                            </div>
+                            <div class="photo">
+                                <img src="/api/placeholder/300/200" alt="Swimming">
+                            </div>
+                            <div class="photo">
+                                <img src="/api/placeholder/300/200" alt="Beach bonfire">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scroll-indicator">↓ Scroll to continue ↓</div>
+                </div>
+                
+                <div class="page" id="page3">
+                    <div class="page-content">
+                        <h2>Family Reunion</h2>
+                        <p>After five years, we finally got the whole family together. So many stories shared and memories made.</p>
+                        <div class="image-grid">
+                            <div class="photo">
+                                <img src="/api/placeholder/300/200" alt="Family photo">
+                            </div>
+                            <div class="photo">
+                                <img src="/api/placeholder/300/200" alt="Family dinner">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scroll-indicator">↓ Scroll to continue ↓</div>
+                </div>
+                
+                <div class="page" id="page4">
+                    <div class="page-content">
+                        <h2>Holiday Season</h2>
+                        <p>Warm lights, festive decorations, and the joy of giving made this winter special.</p>
+                        <div class="image-grid">
+                            <div class="photo">
+                                <img src="/api/placeholder/300/200" alt="Christmas tree">
+                            </div>
+                            <div class="photo">
+                                <img src="/api/placeholder/300/200" alt="Gift unwrapping">
+                            </div>
+                            <div class="photo" style="grid-column: span 2;">
+                                <img src="/api/placeholder/600/200" alt="Family holiday dinner">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scroll-indicator">↓ Scroll to continue ↓</div>
+                </div>
+                
+                <div class="page" id="page5">
+                    <div class="page-content">
+                        <h2>New Beginnings</h2>
+                        <p>Looking forward to creating more memories and adding pages to this scrapbook.</p>
+                        <img src="/api/placeholder/500/300" alt="New journey" style="max-width: 100%; border: 1px solid #ddd;">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="arrow-nav">
-        <div class="nav-dot active" data-page="page1"></div>
-        <div class="nav-dot" data-page="page2"></div>
-        <div class="nav-dot" data-page="page3"></div>
-        <div class="nav-dot" data-page="page4"></div>
-        <div class="nav-dot" data-page="page5"></div>
+    <!-- File Explorer Window -->
+    <div class="window" id="explorer-window" style="width: 70%; height: 70%; top: 15%; left: 15%;">
+        <div class="window-header">
+            <div class="window-title">File Explorer</div>
+            <div class="window-controls">
+                <div class="window-control minimize">─</div>
+                <div class="window-control maximize">□</div>
+                <div class="window-control close">✕</div>
+            </div>
+        </div>
+        <div class="window-menu">
+            <div class="menu-item">File</div>
+            <div class="menu-item">Edit</div>
+            <div class="menu-item">View</div>
+            <div class="menu-item">Help</div>
+        </div>
+        <div class="window-toolbar">
+            <button class="toolbar-button">Back</button>
+            <button class="toolbar-button">Forward</button>
+            <button class="toolbar-button">Up</button>
+            <button class="toolbar-button">New Folder</button>
+        </div>
+        <div class="window-content">
+            <div class="explorer-window">
+                <div class="sidebar">
+                    <div class="sidebar-item active">
+                        <div class="sidebar-icon">📂</div>
+                        <div>Documents</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-icon">📷</div>
+                        <div>Pictures</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-icon">📹</div>
+                        <div>Videos</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-icon">🎵</div>
+                        <div>Music</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-icon">📥</div>
+                        <div>Downloads</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-icon">☁️</div>
+                        <div>OneDrive</div>
+                    </div>
+                </div>
+                <div class="file-explorer">
+                    <div class="file-item" id="open-scrapbook-from-explorer">
+                        <div class="file-icon">📕</div>
+                        <div class="file-name">My Scrapbook.scrpbk</div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon">📄</div>
+                        <div class="file-name">Budget 2023.xlsx</div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon">📄</div>
+                        <div class="file-name">Resume.docx</div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon">📄</div>
+                        <div class="file-name">Project Notes.txt</div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon">📄</div>
+                        <div class="file-name">Presentation.pptx</div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon">📁</div>
+                        <div class="file-name">Vacation Photos</div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon">📁</div>
+                        <div class="file-name">Work Files</div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon">📁</div>
+                        <div class="file-name">Family</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Start Menu -->
+    <div class="start-menu" id="start-menu">
+        <div class="start-menu-header">
+            <div class="user-profile">👤</div>
+            <div>User</div>
+        </div>
+        <div class="start-menu-apps">
+            <div class="app-tile" id="start-scrapbook">
+                <div class="app-icon">📕</div>
+                <div class="app-name">Scrapbook</div>
+            </div>
+            <div class="app-tile" id="start-explorer">
+                <div class="app-icon">📁</div>
+                <div class="app-name">Explorer</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">🌐</div>
+                <div class="app-name">Browser</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">📧</div>
+                <div class="app-name">Mail</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">📅</div>
+                <div class="app-name">Calendar</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">🎮</div>
+                <div class="app-name">Games</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">🎬</div>
+                <div class="app-name">Photos</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">⚙️</div>
+                <div class="app-name">Settings</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">🔍</div>
+                <div class="app-name">Search</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-icon">📌</div>
+        <div class="notification-content">
+            <div class="notification-title">Welcome to WindowsScrap OS</div>
+            <div class="notification-message">Click on "My Scrapbook" to open your digital memories.</div>
+        </div>
+    </div>
+    
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" id="start-button">
+            <div class="start-logo">W</div>
+        </div>
+        <div class="taskbar-icons">
+            <div class="taskbar-icon" id="taskbar-scrapbook">📕</div>
+            <div class="taskbar-icon" id="taskbar-explorer">📁</div>
+            <div class="taskbar-icon">🌐</div>
+            <div class="taskbar-icon">📧</div>
+        </div>
+        <div class="system-tray">
+            <div class="system-icon">📶</div>
+            <div class="system-icon">🔊</div>
+            <div class="system-icon">🔋</div>
+            <div class="clock" id="system-clock">12:00 PM</div>
+        </div>
     </div>
 
     <script>
-        // Navigation dots functionality
-        const dots = document.querySelectorAll('.nav-dot');
-        const pages = document.querySelectorAll('.page');
-        const container = document.querySelector('.scrapbook-container');
+        // DOM Elements
+        const startButton = document.getElementById('start-button');
+        const startMenu = document.getElementById('start-menu');
+        const scrapbookWindow = document.getElementById('scrapbook-window');
+        const explorerWindow = document.getElementById('explorer-window');
+        const openScrapbookIcon = document.getElementById('open-scrapbook');
+        const openExplorerIcon = document.getElementById('open-explorer');
+        const taskbarScrapbook = document.getElementById('taskbar-scrapbook');
+        const taskbarExplorer = document.getElementById('taskbar-explorer');
+        const notification = document.getElementById('notification');
+        const systemClock = document.getElementById('system-clock');
+        const startScrapbook = document.getElementById('start-scrapbook');
+        const startExplorer = document.getElementById('start-explorer');
+        const openScrapbookFromExplorer = document.getElementById('open-scrapbook-from-explorer');
         
-        // Update active dot based on scroll position
-        container.addEventListener('scroll', () => {
-            const currentPosition = container.scrollTop;
-            const windowHeight = window.innerHeight;
+        // Window Controls
+        const closeButtons = document.querySelectorAll('.window-control.close');
+        const minimizeButtons = document.querySelectorAll('.window-control.minimize');
+        const maximizeButtons = document.querySelectorAll('.window-control.maximize');
+        
+        // Draggable Windows
+        const windows = document.querySelectorAll('.window');
+        let activeWindow = null;
+        
+        // Function to open a window
+        function openWindow(windowElement) {
+            // Close all other windows first (optional)
+            // windows.forEach(w => w.style.display = 'none');
             
-            pages.forEach((page, index) => {
-                const pageTop = page.offsetTop;
-                const pageBottom = pageTop + page.offsetHeight;
-                
-                if (currentPosition >= pageTop - windowHeight/2 && 
-                    currentPosition < pageBottom - windowHeight/2) {
-                    dots.forEach(dot => dot.classList.remove('active'));
-                    dots[index].classList.add('active');
-                }
-            });
-        });
+            // Show the selected window
+            windowElement.style.display = 'flex';
+            windowElement.style.transform = 'scale(0.95)';
+            
+            // Add animation
+            setTimeout(() => {
+                windowElement.style.transform = 'scale(1)';
+            }, 50);
+            
+            // Set as active window
+            windows.forEach(w => w.classList.remove('active'));
+            windowElement.classList.add('active');
+            
+            // Update taskbar
+            if (windowElement === scrapbookWindow) {
+                taskbarScrapbook.classList.add('active');
+            } else if (windowElement === explorerWindow) {
+                taskbarExplorer.classList.add('active');
+            }
+        }
         
-        // Click on dot to navigate to page
-        dots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                const targetId = dot.getAttribute('data-page');
-                const targetElement = document.getElementById(targetId);
-                container.scrollTo({
-                    top: targetElement.offsetTop,
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+        // Function to close a window
+        function closeWindow(windowElement) {
+            windowElement.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                windowElement.style.display = 'none';
+                
+                // Update taskbar
+                if (windowElement === scrapbookWindow) {
+                    taskbarScrapbook.classList.remove('active');
+                } else if (windowElement === explorerWindow) {
+                    taskbarExplorer.classList.remove('active');
+                }
+            }, 200); // Adjust timeout if needed for smooth animation
+        }
